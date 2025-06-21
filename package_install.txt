@@ -1,0 +1,14 @@
+bash-completion
+build-essential
+curl
+dconf-editor
+git
+gnome-tweaks
+neofetch
+nmap
+tcpdump
+tilix
+tmux
+tree
+vim
+wget
