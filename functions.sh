@@ -45,12 +45,34 @@ remove_packages() {
 
 #6 Enable Flathub repository.
 enable_flathub() {
-    sudo dnf -y install flatpak
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo 'Flathub repository enabled successfully!'
 }
 
-#7 Create custom directories in your home directory.
+#7 Install development tools.
+install_development_tools(){
+    sudo dnf -y group install development-tools
+}
+
+#8 Install codecs.
+install_codecs() {
+    sudo dnf -y swap ffmpeg-free ffmpeg --allowerasing
+    echo 'Codecs installed successfully!'
+}
+
+#9 Install VLC and multimedia codecs. 
+install_vlc_multimedia_codecs() {
+    # Install VLC and related packages
+    sudo dnf -y install vlc vlc-extras
+    
+    # Install available multimedia codecs from default repositories
+    sudo dnf -y install gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-extras
+    
+    echo 'VLC and available multimedia codecs installed successfully!'
+    echo 'Note: Some additional codecs may require RPM Fusion repositories for full multimedia support.'
+}
+
+#10 Create custom directories in your home directory.
 create_directories() {
     local dirs=(~/.themes ~/.icons ~/software ~/scripts ~/Pictures/wallpapers)
     for dir in "${dirs[@]}"; do
@@ -59,7 +81,7 @@ create_directories() {
     echo 'Directories created successfully!'
 }
 
-#8 Install fonts.
+#11 Install fonts.
 install_font() {
     font_dir=(~/fonttmp)
     font_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/DroidSansMono.zip"
@@ -78,14 +100,14 @@ install_font() {
     echo 'Fonts installed successfully. Ensure you select the font in your terminal etc.'
 }
 
-#9 Copy wallpapers to your ~/Pictures/wallpapers directory.
+#12 Copy wallpapers to your ~/Pictures/wallpapers directory.
 copy_wallpapers() {
-    cp ./wallpaper/* ~/Pictures/wallpapers
+    cp wallpapers/* ~/Pictures/wallpapers
     echo 'Wallpaper copied successfully!'
     echo 'Sometimes you need to log out and login because of a feature in Gnome that does not update the wallpaper immediately.'
 }
 
-#10 Customize Gnome settings.
+#13 Customize Gnome settings.
 customize_gnome() {
     local wallpaper_path="$HOME/Pictures/wallpapers/fedora-black-4k.png"
     gsettings set org.gnome.desktop.background picture-uri "file://$wallpaper_path"
@@ -94,7 +116,7 @@ customize_gnome() {
     echo 'Gnome customized successfully!'
 }
 
-#11 Configure Vim. 
+#14 Configure Vim. 
 configure_vimrc() {
     echo "syntax on" > ~/.vimrc
     echo "set number" >> ~/.vimrc
@@ -102,30 +124,39 @@ configure_vimrc() {
     echo 'Vim customized successfully!'
 }
 
-#12 Install development tools.
-install_development_tools(){
-    sudo dnf -y group install development-tools
+#15 Install Numix theme and icons.
+install_numix_theme() {
+    # Install Numix theme and icons from repositories
+    sudo dnf -y install numix-gtk-theme numix-icon-theme-circle
+    gsettings set org.gnome.desktop.interface gtk-theme Numix
+    gsettings set org.gnome.desktop.interface icon-theme Numix-Circle
+    echo 'Numix theme installed and configured successfully!'
 }
 
-#13 Install codecs.
-install_codecs() {
-    sudo dnf -y swap ffmpeg-free ffmpeg --allowerasing
-    echo 'Codecs installed successfully!'
-}
-
-#14 Install VLC and multimedia codecs. 
-install_vlc_multimedia_codecs() {
-    # Install VLC and related packages
-    sudo dnf -y install vlc vlc-extras
+#16 Prep and install VSCode.
+install_vscode() {
+    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+    echo 'VSCode repository configured successfully!'
     
-    # Install available multimedia codecs from default repositories
-    sudo dnf -y install gstreamer1-plugins-base gstreamer1-plugins-good gstreamer1-plugins-bad-free gstreamer1-plugins-bad-free-extras
-    
-    echo 'VLC and available multimedia codecs installed successfully!'
-    echo 'Note: Some additional codecs may require RPM Fusion repositories for full multimedia support.'
+    sudo dnf -y check-update
+    sudo dnf -y install code
+    echo 'VSCode installed successfully!'
 }
 
-#15 Install and enable firewalld.
+#17 Configure Git.
+configure_git() {
+    cp configs/.gitignore_global ~/
+    git config --global init.defaultBranch main
+    git config --global color.ui auto
+    git config --global core.editor vim
+    git config --global pull.rebase false
+    git config --global core.excludesfile ~/.gitignore_global
+    git config --global --list
+    echo 'Base configuration for Git completed. Ensure you set your username and email!'
+}
+
+#18 Install and enable firewalld.
 install_firewalld_enable() {
     # firewalld is usually pre-installed on Fedora, but install if missing
     sudo dnf -y install firewalld
@@ -142,7 +173,7 @@ install_firewalld_enable() {
     echo 'firewalld installed and enabled successfully!'
 }
 
-#16 Configure swappiness.
+#19 Configure swappiness.
 configure_swappiness() {
     echo 'swappiness before configuration:'
     sudo cat /proc/sys/vm/swappiness
@@ -152,7 +183,7 @@ configure_swappiness() {
     sudo sysctl -a | grep vm.swappiness
 }
 
-#17 Speed up boot time.
+#20 Speed up boot time.
 speed_boot_time() {
     sudo cp -p /etc/default/grub /etc/default/grub.original
     sudo sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=2/g' /etc/default/grub
@@ -161,34 +192,5 @@ speed_boot_time() {
     echo 'Boot time speed configured successfully!'
 }
 
-#18 Install Numix theme and icons.
-install_numix_theme() {
-    # Install Numix theme and icons from repositories
-    sudo dnf -y install numix-gtk-theme numix-icon-theme-circle
-    gsettings set org.gnome.desktop.interface gtk-theme Numix
-    gsettings set org.gnome.desktop.interface icon-theme Numix-Circle
-    echo 'Numix theme installed and configured successfully!'
-}
 
-#19 Prep and install VSCode.
-install_vscode() {
-    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-    sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-    echo 'VSCode repository configured successfully!'
-    
-    sudo dnf -y check-update
-    sudo dnf -y install code
-    echo 'VSCode installed successfully!'
-}
 
-#20 Configure Git.
-configure_git() {
-    cp configs/.gitignore_global ~/
-    git config --global init.defaultBranch main
-    git config --global color.ui auto
-    git config --global core.editor vim
-    git config --global pull.rebase false
-    git config --global core.excludesfile ~/.gitignore_global
-    git config --global --list
-    echo 'Base configuration for Git completed. Ensure you set your username and email!'
-}
