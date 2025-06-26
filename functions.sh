@@ -74,7 +74,7 @@ install_vlc_multimedia_codecs() {
 
 #10 Create custom directories in your home directory.
 create_directories() {
-    local dirs=(~/.themes ~/.icons ~/software ~/scripts ~/Pictures/wallpapers)
+    local dirs=(~/.themes ~/.icons ~/software ~/scripts ~/.local/share/fonts ~/Pictures/wallpapers)
     for dir in "${dirs[@]}"; do
         [ -d "$dir" ] || mkdir -p "$dir"
     done
