@@ -59,3 +59,11 @@ Firefox Preferences and activate Restore previous session
 
 Firefox DRM Settings
 DRM support select enable
+
+In "Settings" I choose the Dark Theme.
+
+Open Firefox, go to https://extensions.gnome.org/ and install the plugin.
+Extensions I install:
+User Themes
+Blur my Shell
+Dash To Dock
