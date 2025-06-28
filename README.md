@@ -67,3 +67,21 @@ Extensions I install:
 User Themes
 Blur my Shell
 Dash To Dock
+
+
+# Things to add:
+- Catppuccin GTK Theme
+https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme
+
+sudo dnf install gtk-murrine-engine sassc
+
+Installed Tela Icon Theme
+https://github.com/vinceliuice/Tela-icon-theme
+
+Install Catppucin Tilix Theme
+https://github.com/catppuccin/tilix
+
+- Install Docker
+- Install VirtualBox
+
+
