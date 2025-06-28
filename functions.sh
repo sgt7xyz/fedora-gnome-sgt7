@@ -97,6 +97,7 @@ install_font() {
     echo "Cleaning up..."
     cd ..
     rm -rf $font_dir
+    fc-list | grep -i DroidSansMNerdFont
     echo 'Fonts installed successfully. Ensure you select the font in your terminal etc.'
 }
 
