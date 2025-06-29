@@ -68,8 +68,15 @@ User Themes
 Blur my Shell
 Dash To Dock
 
+### Things one should install manually. Do not just run bash scripts without reviewing them first!
 
-# Things to add:
+- Homebrew
+    - https://www.homebrew.com
+- Calibre
+    - https://calibre.com
+
+**Things to add:**
+
 - Catppuccin GTK Theme
 https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme
 
@@ -87,6 +94,4 @@ https://github.com/catppuccin/tilix
     - Vagrant
     - Terraform
     - Packer
-    
-
 
