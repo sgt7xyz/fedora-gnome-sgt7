@@ -59,3 +59,42 @@ Firefox Preferences and activate Restore previous session
 
 Firefox DRM Settings
 DRM support select enable
+
+In "Settings" I choose the Dark Theme.
+
+Open Firefox, go to https://extensions.gnome.org/ and install the plugin.
+Extensions I install:
+User Themes
+Blur my Shell
+Dash To Dock
+
+### Things one should install manually. Do not just run bash scripts without reviewing them first!
+
+- Homebrew
+    - https://www.homebrew.com
+- Calibre
+    - https://calibre.com
+
+**Things to add:**
+
+- Catppuccin GTK Theme
+https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme
+
+sudo dnf install gtk-murrine-engine sassc
+
+Installed Tela Icon Theme
+https://github.com/vinceliuice/Tela-icon-theme
+
+Install Catppucin Tilix Theme
+https://github.com/catppuccin/tilix
+
+- Install Docker
+
+- Install VirtualBox
+
+- Install Hashicorp Tools
+    - Vagrant
+    - Terraform
+    - Packer
+
+- Install My Favorite Password Manager
