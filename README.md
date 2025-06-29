@@ -89,9 +89,12 @@ Install Catppucin Tilix Theme
 https://github.com/catppuccin/tilix
 
 - Install Docker
+
 - Install VirtualBox
+
 - Install Hashicorp Tools
     - Vagrant
     - Terraform
     - Packer
 
+- Install My Favorite Password Manager
