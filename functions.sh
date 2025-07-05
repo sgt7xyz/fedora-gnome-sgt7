@@ -240,7 +240,7 @@ install_docker() {
 
     # Add your user to the docker group
     sudo usermod -aG docker "$USER"
-    echo 'User added to the docker group. You may need to log out and log back in for this to take effect.'
+    echo 'User added to the docker group. You need to reboot in order for this to take effect.'
 }
 
 #22 Install VirtualBox.
@@ -258,13 +258,14 @@ install_virtualbox() {
     sudo sh -c 'cat > /etc/yum.repos.d/virtualbox.repo <<EOF
 [virtualbox]
 name=Fedora $releasever - $basearch - VirtualBox
-baseurl=http://download.virtualbox.org/virtualbox/rpm/fedora/$releasever/$basearch
+baseurl=http://download.virtualbox.org/virtualbox/rpm/fedora/\$releasever/\$basearch
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
-gpgkey=https://www.virtualbox.org/download/oracle_vbox_2016.asc'
-
-    echo 'VirtualBox Fedora repository added successfully.'
+gpgkey=https://www.virtualbox.org/download/oracle_vbox_2016.asc
+EOF'
+ 
+    echo 'VirtualBox Fedora repository added successfully.'    
     
     # Install VirtualBox
     sudo dnf -y install VirtualBox-7.1
@@ -274,7 +275,3 @@ gpgkey=https://www.virtualbox.org/download/oracle_vbox_2016.asc'
     sudo usermod -aG vboxusers "$USER"
     echo 'User added to the vboxusers group. You may need to log out and log back in for this to take effect.'
 }
-
-
-
-
