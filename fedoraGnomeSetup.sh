@@ -35,7 +35,7 @@ while true; do
     echo '12. Copy wallpapers'
     echo '13. Customize GNOME settings'
     echo '14. Configure Vim'
-    echo '15. Install Numix theme and icons'
+    echo '15. Install Catppuccin GTK theme'
     echo
     echo '  Applications & Tools:'
     echo '16. Install VSCode'
@@ -45,8 +45,10 @@ while true; do
     echo '18. Install and enable firewalld'
     echo '19. Configure swappiness'
     echo '20. Speed up boot time'
+    echo '21. Install Docker'
+    echo '22. Install VirtualBox'
     echo
-    echo '21. Execute all steps'
+    echo '23. Execute all steps'
     echo '0.  Exit'
     echo
     echo -n 'Enter the number of your choice: '
@@ -111,7 +113,7 @@ while true; do
             ;;
 
         15) 
-            install_numix_theme
+            install_catppuccin_gtk_theme
             ;;
 
         16) 
@@ -135,6 +137,14 @@ while true; do
             ;;
 
         21) 
+            install_docker
+            ;;
+
+        22) 
+            install_virtualbox
+            ;;
+
+        23) 
             echo 'Executing all setup steps...'
             echo
             backup_configs
@@ -152,12 +162,14 @@ while true; do
             copy_wallpapers
             customize_gnome
             configure_vimrc
-            install_numix_theme
+            install_catppuccin_gtk_theme
             install_vscode
             configure_git
             install_firewalld_enable
             configure_swappiness
             speed_boot_time
+            install_docker
+            install_virtualbox
             echo
             echo 'All setup steps completed!'
             ;;

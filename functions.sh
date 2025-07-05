@@ -103,8 +103,15 @@ install_font() {
 
 #12 Copy wallpapers to your ~/Pictures/wallpapers directory.
 copy_wallpapers() {
-    cp wallpapers/* ~/Pictures/wallpapers
-    echo 'Wallpaper copied successfully!'
+    script_dir="$(cd \"$(dirname \"${BASH_SOURCE[0]}\")\" && pwd)"
+    src_dir="$script_dir/wallpapers"
+    dest_dir=~/Pictures/wallpapers
+    if compgen -G "$src_dir/*" > /dev/null; then
+        cp "$src_dir"/* "$dest_dir"
+        echo 'Wallpaper copied successfully!'
+    else
+        echo 'No wallpapers found to copy.'
+    fi
     echo 'Sometimes you need to log out and login because of a feature in Gnome that does not update the wallpaper immediately.'
 }
 
@@ -125,13 +132,22 @@ configure_vimrc() {
     echo 'Vim customized successfully!'
 }
 
-#15 Install Numix theme and icons.
-install_numix_theme() {
-    # Install Numix theme and icons from repositories
-    sudo dnf -y install numix-gtk-theme numix-icon-theme-circle
-    gsettings set org.gnome.desktop.interface gtk-theme Numix
-    gsettings set org.gnome.desktop.interface icon-theme Numix-Circle
-    echo 'Numix theme installed and configured successfully!'
+#15 Install and set Catppuccin GTK Theme.
+install_catppuccin_gtk_theme() {
+    # Install dependencies
+    sudo dnf -y install gtk-murrine-engine sassc git
+
+    # Clone Catppuccin GTK Theme
+    git clone https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme.git ~/Catppuccin-GTK-Theme
+
+    # Install the theme (using default settings, can be customized)
+    cd ~/Catppuccin-GTK-Theme
+    ./install.sh
+
+    # Set the theme (example: Catppuccin-Mocha-Standard-Blue-Dark)
+    gsettings set org.gnome.desktop.interface gtk-theme "Catppuccin-Mocha-Standard-Blue-Dark"
+
+    echo 'Catppuccin GTK Theme installed and configured successfully!'
 }
 
 #16 Prep and install VSCode.
@@ -161,6 +177,7 @@ configure_git() {
 install_firewalld_enable() {
     # firewalld is usually pre-installed on Fedora, but install if missing
     sudo dnf -y install firewalld
+    sudo dnf -y install firewall-config
     
     # Enable and start firewalld service
     sudo systemctl enable firewalld
@@ -192,6 +209,72 @@ speed_boot_time() {
     sudo grep GRUB_TIMEOUT /etc/default/grub
     echo 'Boot time speed configured successfully!'
 }
+
+#21 Install Docker.
+install_docker() {
+    # Remove old Docker versions
+    sudo dnf remove -y \
+        docker \
+        docker-client \
+        docker-client-latest \
+        docker-common \
+        docker-latest \
+        docker-latest-logrotate \
+        docker-logrotate \
+        docker-selinux \
+        docker-engine-selinux \
+        docker-engine
+    echo 'Old Docker versions removed.'
+
+    # Set up the Docker repository
+    sudo dnf -y install dnf-plugins-core
+    sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+
+    # Install Docker
+    sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    echo 'Docker installed successfully!'
+
+    #Enable and start Docker service
+    sudo systemctl enable docker
+    sudo systemctl start docker
+
+    # Add your user to the docker group
+    sudo usermod -aG docker "$USER"
+    echo 'User added to the docker group. You may need to log out and log back in for this to take effect.'
+}
+
+#22 Install VirtualBox.
+install_virtualbox() {
+
+    #Install VirtualBox dependencies
+    sudo dnf install @development-tools
+    sudo dnf install kernel-headers kernel-devel dkms
+
+    # Import Oracle public key
+    wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm --import -
+    echo 'Oracle public key imported.'
+
+    # Add VirtualBox Fedora repository
+    sudo sh -c 'cat > /etc/yum.repos.d/virtualbox.repo <<EOF
+[virtualbox]
+name=Fedora $releasever - $basearch - VirtualBox
+baseurl=http://download.virtualbox.org/virtualbox/rpm/fedora/$releasever/$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://www.virtualbox.org/download/oracle_vbox_2016.asc'
+
+    echo 'VirtualBox Fedora repository added successfully.'
+    
+    # Install VirtualBox
+    sudo dnf -y install VirtualBox-7.1
+    echo 'VirtualBox installed successfully!'
+
+    # Add the user to the vboxusers group
+    sudo usermod -aG vboxusers "$USER"
+    echo 'User added to the vboxusers group. You may need to log out and log back in for this to take effect.'
+}
+
 
 
 

@@ -82,11 +82,16 @@ https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme
 
 sudo dnf install gtk-murrine-engine sassc
 
+Catppuccin for Papirus Folders 
+https://github.com/catppuccin/papirus-folders
+
 Installed Tela Icon Theme
 https://github.com/vinceliuice/Tela-icon-theme
 
 Install Catppucin Tilix Theme
 https://github.com/catppuccin/tilix
+
+
 
 - Install Docker
 
